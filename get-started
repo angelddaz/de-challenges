@@ -18,5 +18,5 @@ cd de-devtools
 make local 
 # will fail here in second step
 # TODO fix bug
-chmod 755 ~/.ansible
+sudo chmod 755 ~/.ansible
 make local
