@@ -1,0 +1,22 @@
+# launch ec2 instance. create keys if needed and download.
+sudo chmod 400 /home/angel/cloud-dev/ec2keys.pem
+ssh -i /home/angel/cloud-dev/ec2keys.pem ubuntu@ec2-54-188-31-201.us-west-2.compute.amazonaws.com
+
+# You're now in your ec2 instance with ubuntu user
+sudo passwd
+su
+sudo vim /etc/sudoers
+exit
+
+# download OS-level dependencies
+sudo apt-get update && sudo apt-get install -y software-properties-common git make ansible
+sudo apt-add-repository --yes --update ppa:ansible/ansible
+
+# download automation software
+git clone https://github.com/angelddaz/de-devtools.git
+cd de-devtools
+make local 
+# will fail here in second step
+# TODO fix bug
+chmod 755 ~/.ansible
+make local
