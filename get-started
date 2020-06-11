@@ -59,5 +59,13 @@ c.NotebookApp.password = u'sha1:98ff0e580111:12798c72623a6eecd54b51c006b1050f0ac
 # Set the port to 8888, the port we set up in the AWS EC2 set-up
 c.NotebookApp.port = 8888
 ```
+sudo chown $USER:$USER /home/ubuntu/certs/mycert.pem
 
+# After finishing configuration of jupyter
+# allow all traffic from your IP address by going to `NETWORK & SECURITY` > `Security Groups`
+# inside of aws console
 
+# Visit https://{aws_host_name}:{port number}
+# and proceed with password created in line 34.
+
+# You may now write prototype data pipelines in the cloud
