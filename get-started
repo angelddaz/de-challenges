@@ -15,9 +15,6 @@ sudo apt-add-repository --yes --update ppa:ansible/ansible
 # download automation software
 git clone https://github.com/angelddaz/de-devtools.git
 cd de-devtools
-make local 
-# will fail here in second step
-# TODO fix bug
 sudo chmod 756 ~/.ansible
 make local
 
