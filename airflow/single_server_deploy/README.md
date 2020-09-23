@@ -38,3 +38,6 @@ So the address will look something like this:
 
 5. (note) Future enhancements, or CI/CD challenges, will include securing your webserver site with openssl, not just depending on IP address. 
 And finally, a docker+Kubernetes deployment.
+
+Loom video guide following Steps 2 - 4:
+https://www.loom.com/share/25c5b77875dc46f6bd9033d08390d642
