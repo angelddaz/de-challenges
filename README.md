@@ -1,6 +1,6 @@
-If you have do not already have an Ubuntu 18.04 shell, please set one up through a cloud provider like AWS or GCP.
+First steps are to set up an Ubuntu shell to run automation software which configures your server for Data Engineering development.
 
-I have recorded a guide for GCP here:
-https://www.loom.com/share/fd0974dfea7e4cbc86623a3ecefb867a
+You can follow this screencast on how to set up a free tier Ubuntu 18.04 shell through AWS EC2 and also run the automation software.
+https://www.loom.com/share/8f88ef2d6c60443aa40e334cd6c143f5
 
-After you have an Ubuntu shell, follow the instructions found in `get_started` to run automation scripts for all the tools needed in this repository.
+If you don't wish to follow the video, you can follow the instructions found in `get_started` to run automation scripts for all the tools needed in this repository.
