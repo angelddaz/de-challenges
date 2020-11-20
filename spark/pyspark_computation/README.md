@@ -1,3 +1,5 @@
+## Databricks 
+
 Part 0:
 1. Create a free Databricks account on https://databricks.com/try-databricks  
   - Press community edition on the next page  
@@ -6,6 +8,7 @@ Part 0:
   - Name: sparkchallenge  
   - Set Default Language to Python  
 
+## AWS 
 Part 1:
 1. Create/Open AWS account  
 2. Go to s3 buckets  
@@ -13,6 +16,7 @@ Part 1:
   - Enable Bucket versioning  
 4. Upload csv  
 
+## AWS and Databricks Sync
 Part 2:
 1. Follow steps 1-6 here: https://docs.databricks.com/administration-guide/cloud-configurations/aws/instance-profiles.html  
   - In step 1 part 3d: Name your role airflow_orchestrator_role  
@@ -25,52 +29,8 @@ Part 2:
       * replace aws-account-id-databricks with your AWS account ID  
   - In step 6 create a new cluster  
 
+## Databricks deployment ready
 Part 3:
 1. Go back to your notebook on databricks  
 2. Run it in the cluster you just created with the instance profile  
 3. Read in the csv into a df  
-  
-  
-  ******************************  
-    
-      
-part 0:
-1. Programmatically create a CSV dataset that is 100MB with four columns; unique integer, text, float, and boolean.
-2. Create two scripts; one leveraging spark and another on pandas alone
-3. If you need to execute the spark portion of this project on a cluster, I would recommend an EMR on the lowest settings possible. That should stay within your free tier, or at least be a well worth investment.
-
-part 1: 
-1. In the pandas script, read_csv() 
-2. time the performance of several data transformations:
-* count of rows
-* a sql or sql-like query, extracting rows based on unique col conditions
-
-part 2:
-1. In the pyspark script
-* create a spark dataframe with correct structfields and datatypes specified.
-* import the 100MB CSV into the dataframe
-* partition across the unique integer column
-2. Time the performance of several data transfomations:
-* count of rows
-* a sql or sql-like query, extracting rows based on unique col conditions
-
-
-part 0:
-1. Programmatically create a CSV dataset that is 100MB with four columns; unique integer, text, float, and boolean.
-2. Create two scripts; one leveraging spark and another on pandas alone
-3. If you need to execute the spark portion of this project on a cluster, I would recommend an EMR on the lowest settings possible. That should stay within your free tier, or at least be a well worth investment.
-
-part 1: 
-1. In the pandas script, read_csv() 
-2. time the performance of several data transformations:
-* count of rows
-* a sql or sql-like query, extracting rows based on unique col conditions
-
-part 2:
-1. In the pyspark script
-* create a spark dataframe with correct structfields and datatypes specified.
-* import the 100MB CSV into the dataframe
-* partition across the unique integer column
-2. Time the performance of several data transfomations:
-* count of rows
-* a sql or sql-like query, extracting rows based on unique col conditions
