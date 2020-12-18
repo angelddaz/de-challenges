@@ -324,10 +324,10 @@ Part 2:
 ```
 
    - Replace the policy.
-    - Replace *iam-role-for-s3-access* with the first role you created.
-    - Replace *aws-account-id-databricks* with your AWS account ID.
-    - Click **Review** policy.
-    - Click Save changes.
+     - Replace *iam-role-for-s3-access* with the first role you created.
+     - Replace *aws-account-id-databricks* with your AWS account ID.
+     - Click **Review** policy.
+     - Click Save changes.
     
 5.  In the AWS console, go to the **Service** drop down menu on the top left corner. Under **Security, Identity & Compliance** go to **IAM**.
     - Select Roles on the sidebar menu
