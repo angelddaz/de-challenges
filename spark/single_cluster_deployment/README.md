@@ -1,32 +1,30 @@
 ## Databricks free account
-Part 0:
+Part 0: Create a Databricks account
 1.	Create a free Databricks account on https://databricks.com/try-databricks
 2.	Press **Community Edition** on the next page.
 
 ## AWS Bucket Creation
-Part 1:
+Part 1: Create an s3 bucket
 1.	Create/Open AWS account.
-2.	Go to the **Service** drop down menu on the top left corner. Under **Storage** press **S3**.
-3.	Press **Create Bucket**.
-1.	Name the bucket (make sure bucket is in correct time zone/region)
-2.	Create bucket named something like `cluster_challenge`
-4.	Press on your bucket name.
-5.	Press **Upload** then Add CSV files to analyze. I recommend looking at Medicare spending data [by state](https://data.cms.gov/provider-data/dataset/rs6n-9qwg) and [per hospital](https://data.cms.gov/provider-data/dataset/5hk7-b79m), two datasets that can be treated relationally.
+2.	Go to the **Service** drop down menu on the top left corner. Under **Storage** press **S3** then press **Create Bucket**.
+3.	Name the bucket and make sure bucket is in correct region.
+4.	Create bucket named something like `cluster_challenge`
+5.	Press the name of the bucket you just created, press **Upload** then **Add files** and add your CSV.
+6.	I recommend looking at Medicare spending data [by state](https://data.cms.gov/provider-data/dataset/rs6n-9qwg) and [per hospital](https://data.cms.gov/provider-data/dataset/5hk7-b79m), two datasets that can be treated relationally.
 
 ## AWS and Databricks Sync
-Part 2: 
-1.	In the AWS console, go to the **Service** drop down menu on the top left corner. Under **Security, Identity & Compliance** go to **IAM**.
-    - Click the **Roles** tab in the sidebar.
-    - Click Create role.
-    - Under **Select type of trusted entity**, select **AWS service**.
-    - Under Choose the service that will use this role, select **EC2**.
-    - In the bottom right corner click **Next: Permissions, Next: Tags, and Next: Review**.
-    - In the Role name field, type a role name like `databricks`
-    - Click Create role. The list of roles displays.
-    - In the role list, click the role you just created.
-    - Under the **Permission** tab, click **Add Inline Policy** in the bottom right corner. This policy grants access to the S3 bucket.
-    - Click the JSON tab.
-    - Copy this policy and set *s3-bucket-name* to the name of your bucket:
+Part 2:  Create an EC2 role to call AWS services on your behalf
+1.	In the AWS console, go to the **Service** drop down menu on the top left corner. Under **Security, Identity & Compliance** press **IAM**.
+2.  Click the **Roles** tab in the sidebar then click **Create role**.
+3.  Under **Select type of trusted entity**, select **AWS service** then under **Choose a use case**, select **EC2**.
+4.  In the bottom right corner click **Next: Permissions, Next: Tags, and Next: Review**.
+5.  In the Role name field, type a role name like 'databricks' then click **Create role**.
+6.  In the role list of roles displayed, click the role you just created.
+7.  Under the **Permission** tab, click **Add Inline Policy** in the bottom right corner. This policy grants access to the S3 bucket.
+8.  Click the **JSON** tab.
+9.  Copy this policy and in 2 places within the policy replace *s3-bucket-name* with the name of your bucket.
+10. When done click **Review policy**.
+11. In the **Name** field, type a policy name and click **Create policy**.
 
 ```
 {
@@ -56,16 +54,16 @@ Part 2:
   ]
 }
 ```
-    
-- Click **Review policy**.
-    - In the **Name** field, type a policy name like `databricks_perms`
-    - Click **Create policy**.
-    - Scroll up, in the **Summary** sections, copy the **Instance Profile ARN**.
-2. In the AWS console, go to the **Service** drop down menu on the top left corner. Under **Storage** go to **S3**.
-    - Press your bucket name and go to the **Permissions** tab
-    - Scroll down to **Bucket Policy** and press **Edit**
-    - Paste the following policy, replacing *aws-account-id-databricks* with the AWS account ID where the Databricks environment is deployed. Replace *iam-role-for-s3-access* with the role you created in Step 1, and *s3-bucket-name* with the bucket name.
+Part 3: Provide access to the objects stored in the bucket     
+1.  In the AWS console go to **S3**.
+2.  Press your bucket name and go to the **Permissions** tab.
+3.  Scroll down to **Bucket Policy** and press **Edit**.
+4.  Paste the following policy.
+    - Replace *aws-account-id-databricks* with the AWS account ID where the Databricks environment is deployed. There are two places within the policy.
+    - Replace *iam-role-for-s3-access* with the EC2 role you just created in Part 2. There are two places within the policy.
+    - Replace *s3-bucket-name* with the bucket name. There are two places within the policy.
       - You can find your AWS Account ID by clicking on the drop down arrow on your User Name in the top right corner.
+5.  Click **Save**.
 
 ```
 {
@@ -99,34 +97,23 @@ Part 2:
   ]
 }
 ```
-
-   - Click Save.
-   
-3.  Go back to [Databricks](https://community.cloud.databricks.com/) and access the **Account Console** by clicking the user profile that looks like a figure.
-    - Select **Manage Account** and log in.
-    - Click the **AWS Account** tab.
-    - Select the **Deploy to AWS using Cross Account Role** radio button.
-    - In the **AWS Region** drop-down, select correct **AWS region**. Make sure it matches your the region in your bucket.
-    - Copy the **External ID**.
-    - In the AWS console, go to the **Service** drop down menu on the top left corner. Under **Security, Identity & Compliance** go to **IAM**.
-    - Click the Roles tab in the sidebar.
-    - Click Create role to create a second role.
-    - In **Select type of trusted entity**, click the **Another AWS** account tile.
-    - In the **Account ID** field, enter this Databricks hard coded account ID *414351767826*.
-    - Select the **Require external ID** checkbox.
-    - In the **External ID** field, paste the Databricks External ID found under `AWS Account`.
-      - To find External ID, go back to Databricks and access the Account Console by clicking the user profile that looks like a figure. Log in and select Manage Account and AWS Account.
-    - Click the **Next: Permissions button**.
-    - Click the **Next: Tags button**.
-    - Click the **Next: Review button**.
-    - In the Role name field, enter a role name.
-    - Click Create role. The list of roles displays.
-    
-    * Good spot for a new chunk * 
-    - In the list of roles, click the role you created.
-    - Under the **Permission** tab, click **Add Inline Policy** in the bottom right corner.
-    - In the policy editor, click the JSON tab.
-    - Paste this access policy into the editor:
+Part 4: Create Cross Account Role
+1.  Go back to Databricks and access the **Account Console** by clicking the user profile that looks like a figure in the top right corner.
+2.  Select **Manage Account** and log in. Fill out details if required.
+3.  Click the **AWS Account** side tab and select **Deploy to AWS using Cross Account Role**.
+4.  In the **AWS Region** drop-down, select correct **AWS region**. Make sure it matches your the region in your bucket.
+5.  Copy the **External ID**.
+6.  In the AWS console, go to **IAM** then go to roles and click **Create role**.
+7.  In **Select type of trusted entity**, click the **Another AWS** account tile.
+8.  In the **Account ID** field, enter this Databricks hard coded account ID *414351767826* then select the **Require external ID** checkbox.
+9.  In the **External ID** field, paste the Databricks External ID you copied earlier found under 'AWS Account'.
+10. Click **Next: Permissions button**, **Next: Tags button** and **Next: Review button**.
+11. In the Role name field, enter a role name and click **Create role**
+12. The list of roles are displayed, click the role you just created.
+13. Under the **Permissio**n tab, click **Add Inline Policy** in the bottom right corner.
+14. In the policy editor, click the JSON tab and paste the following access policy into the editor, no changes are needed.
+15. Click **Review policy**, enter a policy name and click **Create Policy**.
+16. In **Summary**, copy the **Role ARN**.
  
 ```
 {
@@ -209,40 +196,25 @@ Part 2:
   ]
 }
 ```
+Part 5: After creating a second AWS IAM Role for extensive ec2 permissions, we return to Databricks to finish deployment.
 
-- Click **Review policy**.
-  - In the Name field, enter a policy name like `databricks_ec2_perms`
-  - Click **Create policy**.
+1.  Return to the Databricks Account Console and in the **AWS Account** tab, paste the `databricks_cluster` **Role ARN** you copied in the last step into the **Role ARN** field.
+2.  Click **Next Step**.
+3.  Enter your bucket name and click **Generate Policy**. Copy the generated policy.
+4.  In the AWS console, go to **S3** and click your bucket name.
+5.  Go to the **Permissions** tab and scroll down to **Bucket Policy** then click **Edit**.
+6.  Replace the policy using what you just copied and click Save.
+7.  Now go the **Properties** tab then the **Bucket Versioning** tile and click **Enable versioning** then **Save**.
+8.  Go back to the Databricks Account Console and in the AWS Storage tab click **Apply Change**.
+9.  Deployment should take about 30 minutes
   
- Once the policy is created, enable versioning for your S3 Bucket Policy.
- 
-  - In **Summary**, copy the `databricks_cluster` **Role ARN**.
-  
-After creating a second AWS IAM Role for extensive ec2 permissions, we return to Databricks.
-  - In the Databricks Account Console, return to the **AWS Account** tab and in the **Role ARN** field, paste the `databricks_cluster` **Role ARN** you copied in the last step.
-  - Click **Next Step**.
-  - Enter your bucket name and click **Generate Policy**.
-  - Copy the generated policy.
-  - In the AWS console, go to the **Service** drop down menu on the top left corner. Under **Storage** go to **S3**.
-  - Click the bucket name.
-  - Click the **Permissions** tab.
-  - Click the **Bucket Policy** button and click **Edit**.
-  - Replace the policy that you copied in Step 1 and click Save.
-  
-  - Click the **Properties** tab.
-  - Click the **Versioning** tile.
-  - Click **Enable versioning** and click **Save**.
-  
-  - Go back to the Databricks Account Console, go to the AWS Storage tab.
-  - Click Apply Change.
-  - Deploy and it should take about 30 minutes
-  
-4.	In the AWS console, go to the **Service** drop down menu on the top left corner. Under Security, Identity & Compliance go to IAM.
-    - Click the **Roles** tab in the sidebar.
-    - Click on the last role created `databricks_cluster`
-    - On the **Permissions** tab, click the policy.
-    - Click **Edit Policy**, go to the JSON tab
-    - Copy this policy
+Part 6: Add more permissions
+1.	In the AWS console go to **IAM** then go to roles and click on the last role you created `databricks_cluster`.
+2.  On the **Permissions** tab click the policy and click **Edit Policy** then press the JSON tab.
+3.  Copy the following policy and replace the existing one. This will add one more permission.
+    - Replace *iam-role-for-s3-access* with the first EC2 role you created.
+    - Replace *aws-account-id-databricks* with your AWS account ID.
+4.  Click **Review** policy and save changes.
 
 ```
 {
@@ -330,38 +302,27 @@ After creating a second AWS IAM Role for extensive ec2 permissions, we return to
   ]
 }
 ```
+Part 7: Create Instance Profile as they are more secure than access keys    
+1.  In the AWS console go to **IAM** and select Roles on the side menu.
+2.  Go to the first EC2 role you created on IAM `databricks`, and copy **Instance Profile ARN** in the **Summary** section.
+3.  Click on your Databricks cloud deployment link and access the 'Account Console' by clicking the user profile on the top right.
+4.  Select **Admin Console** and click the **Instance Profiles** tab.
+5.  Press **Add Instance Profile** and paste the **Instance Profile ARN** copied earlier then click **Add**.
 
-   - Replace the policy.
-Before clicking Review Policy, replace the following values
-    - Replace a single *iam-role-for-s3-access* with the first role you created `databricks`
-    - Replace a single *aws-account-id-databricks* with your AWS account ID.
-    - Click **Review** policy.
-    - Click Save changes.
-    
-5.  Under AWS Services **IAM** to create an instance profile
-    - Select Roles on the sidebar menu
-    - Go to the first role you created on IAM `databricks`, and copy **Instance Profile ARN** in the **Summary** section.
-    
-    - Go to your Databricks cloud deployment link and access the `Account Console` by clicking the user profile on the top right and clicking **Admin Console**.
-    - Click the **Instance Profiles** tab.
-    - Click `Add Instance Profile` 
-    - Paste **Instance Profile ARN**.
-    - Click Add.
-
-6.	Go back to the main Databricks page
-    - Under **Common Tasks** click **New Cluster**.
-    - Enter cluster name like `testcluster`
-    - Scroll down and drop down arrow for the Advanced Options section.
-    - On the Instances tab, select the instance profile from the Instance Profile drop-down list.
-    - Click **Create Cluster** and create cluster with preferred amount of workers.
+Part 8: Create cluster
+1. Go back to the main Databricks page.
+2. Under **Common Tasks** click **New Cluster** and enter cluster name like `testcluster`.
+3. Scroll down and drop down the arrow for the **Advanced Options** section.
+4. On the **Instance** section, select your instance profile from the Instance Profile drop-down list then click **Create Cluster**.
+5. Create your cluster with your preferred amount of workers.
 
 # Databricks deployment ready
 
-Part 3:
+Part 9: Create notebook and verify access
 1.	Go back to the main page and click **New Notebook** under **Common Tasks**.
-    - Name your notebook and set Default Language to Python. 
-    - Set cluster to the one you just created.
-    - To Verify that you can access the S3 bucket, use the following command and replace *s3-bucket-name* with your bucket name
+2.  Name your notebook and set Default Language to Python. 
+3.  Set cluster to the one you just created.
+4.  To Verify that you can access the S3 bucket, use the following command and replace *s3-bucket-name* with your bucket name
       ```dbutils.fs.ls("s3a://<s3-bucket-name>/")```
       should return something like
       ```      
@@ -370,4 +331,4 @@ Part 3:
         FileInfo(path='s3a://clusterchallenge/oregon-prod/', name='oregon-prod/', size=0)]
     ```
     
-  - Once verified, read the CSVs into spark dataframes to begin analysis
+5. Once verified, read the CSVs into a spark dataframe to begin analysis
