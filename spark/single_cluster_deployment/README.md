@@ -24,7 +24,7 @@ Part 2:  Create an EC2 role to call AWS services on your behalf
 8.  Click the **JSON** tab.
 9.  Copy this policy and in 2 places within the policy replace *s3-bucket-name* with the name of your bucket.
 10. When done click **Review policy**.
-11. In the **Name** field, type a policy name and click **Create policy**.
+11. In the **Name** field, type a policy name like `ec2_perms` and click **Create policy**.
 
 ```
 {
@@ -196,14 +196,14 @@ Part 4: Create Cross Account Role
   ]
 }
 ```
-Part 5: After creating a second AWS IAM Role for extensive ec2 permissions, we return to Databricks to finish deployment.
+Part 5: After creating a second AWS IAM Role for extensive ec2 permissions, we return to Databricks to generate permissions for our S3 bucket.
 
 1.  Return to the Databricks Account Console and in the **AWS Account** tab, paste the `databricks_cluster` **Role ARN** you copied in the last step into the **Role ARN** field.
 2.  Click **Next Step**.
 3.  Enter your bucket name and click **Generate Policy**. Copy the generated policy.
 4.  In the AWS console, go to **S3** and click your bucket name.
 5.  Go to the **Permissions** tab and scroll down to **Bucket Policy** then click **Edit**.
-6.  Replace the policy using what you just copied and click Save.
+6.  Replace the policy with the copied generated policy from step 3 and click Save.
 7.  Now go the **Properties** tab then the **Bucket Versioning** tile and click **Enable versioning** then **Save**.
 8.  Go back to the Databricks Account Console and in the AWS Storage tab click **Apply Change**.
 9.  Deployment should take about 30 minutes
@@ -302,7 +302,7 @@ Part 6: Add more permissions
   ]
 }
 ```
-Part 7: Create Instance Profile as they are more secure than access keys    
+Part 7: Create Instance Profile as they are more secure than access keys
 1.  In the AWS console go to **IAM** and select Roles on the side menu.
 2.  Go to the first EC2 role you created on IAM `databricks`, and copy **Instance Profile ARN** in the **Summary** section.
 3.  Click on your Databricks cloud deployment link and access the 'Account Console' by clicking the user profile on the top right.
