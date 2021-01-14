@@ -7,5 +7,5 @@
     * web_server_ssl_cert = ~/certs/server.crt
     * web_server_ssl_key = ~/certs/server.key
 3. Reboot your server and attempt to visit in your browser with `https://` in front of your public IPv4 DNS address, which would be followed by the port number
-    * ex: htpps://ec2-1-1-1.us-east-1.amazon.com:8080
+    * ex: https://ec2-1-1-1.us-east-1.amazon.com:8080
 
