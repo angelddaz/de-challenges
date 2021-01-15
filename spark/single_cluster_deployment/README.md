@@ -8,7 +8,7 @@ Part 1: Create an s3 bucket
 1.	Create/Open AWS account.
 2.	Go to the **Service** drop down menu on the top left corner. Under **Storage** press **S3** then press **Create Bucket**.
 3.	Name the bucket and make sure bucket is in correct region.
-4.	Create bucket named something like `cluster_challenge`
+4.	Create bucket named something like `clusterchallenge`
 5.	Press the name of the bucket you just created, press **Upload** then **Add files** and add your CSV.
 6.	I recommend looking at Medicare spending data [by state](https://data.cms.gov/provider-data/dataset/rs6n-9qwg) and [per hospital](https://data.cms.gov/provider-data/dataset/5hk7-b79m), two datasets that can be treated relationally.
 
